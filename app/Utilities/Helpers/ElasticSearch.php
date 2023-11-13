@@ -26,7 +26,7 @@ class ElasticSearch implements ElasticsearchHelperInterface
         return MailerLiteElasticSearch::index($data);
     }
 
-    function listEmail(string $page, string $perPage)
+    function listEmail(string $page, string $perPage): array
     {
         $params = [
             'index' => 'simple-email',

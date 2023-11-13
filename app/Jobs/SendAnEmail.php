@@ -6,14 +6,12 @@ use App\Mail\SendEmail;
 use Illuminate\Support\Str;
 use Illuminate\Bus\Queueable;
 use App\Utilities\Helpers\Redis;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Queue\SerializesModels;
 use App\Utilities\Helpers\ElasticSearch;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use App\Utilities\Contracts\ElasticsearchHelperInterface;
 
 class SendAnEmail implements ShouldQueue
 {

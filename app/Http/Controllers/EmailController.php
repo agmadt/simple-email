@@ -14,6 +14,7 @@ class EmailController extends Controller
     public function send(User $user, SendEmailRequest $request): JsonResponse
     {
         foreach ($request->emails as $email) {
+            
             $data = [
                 'user_name' => $user->name,
                 'user_email' => $user->email,
@@ -21,6 +22,7 @@ class EmailController extends Controller
                 'subject' => $email['subject'],
                 'body' => $email['body']
             ];
+
             SendAnEmail::dispatch($data);
         }
 
