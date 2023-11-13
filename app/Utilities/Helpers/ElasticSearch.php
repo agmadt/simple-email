@@ -25,4 +25,33 @@ class ElasticSearch implements ElasticsearchHelperInterface
 
         return MailerLiteElasticSearch::index($data);
     }
+
+    function listEmail(string $page, string $perPage)
+    {
+        $params = [
+            'index' => 'simple-email',
+            'body' => [
+                'from' => ($page - 1) * $perPage,
+                'size' => $perPage,
+            ]
+        ];
+
+        $response = MailerLiteElasticSearch::search($params);
+        $emails = [];
+        foreach ($response['hits']['hits'] as $hit) {
+            $emails[] = [
+                'id' => $hit['_id'],
+                'email' => $hit['_source']['email'],
+                'subject' => $hit['_source']['subject'],
+                'body' => $hit['_source']['body'],
+            ];
+        }
+
+        return [
+            'emails' => $emails,
+            'total' => $response['hits']['total']['value'],
+            'page' => $page,
+            'per_page' => $perPage,
+        ];
+    }
 }

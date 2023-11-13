@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Jobs\SendAnEmail;
+use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Http\Requests\SendEmailRequest;
+use App\Utilities\Helpers\ElasticSearch;
 
 class EmailController extends Controller
 {
@@ -27,9 +29,15 @@ class EmailController extends Controller
         ], 200);
     }
 
-    //  TODO - BONUS: implement list method
-    public function list()
+    public function list(Request $request)
     {
+        $page = $request->page ?? 1;
+        $perPage = $request->per_page ?? 10;
 
+        $es = new ElasticSearch();
+        $results = $es->listEmail($page, $perPage);
+        return response()->json([
+            'data' => $results,
+        ]);
     }
 }
