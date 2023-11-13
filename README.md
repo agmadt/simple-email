@@ -1,28 +1,44 @@
-<p align="center"><a href="https://autoklose.com" target="_blank"><img src="https://app.autoklose.com/images/svg/autoklose-logo-white.svg" width="400"></a></p>
+# Autoklose Assignment
+#### This is a simple email sending API utilizing Elasticsearch and Redis
 
-## Instructions
-The repository for the assignment is public and Github does not allow the creation of private forks for public repositories.
+## Steps to run the project locally. Make sure docker-compose is installed
 
-The correct way of creating a private fork by duplicating the repo is documented here.
+##### Step 1:
+create a .env file by copying .env.example
 
-For this assignment the commands are:
+##### Step: 2: run container in background
+`RUN docker-compose up -d`
 
-Create a bare clone of the repository.
+##### Step: 3: get into a container shell
+`RUN docker exec -it autoklose-laravel.test-1 bash`
+NB: autoklose is an automatic folder name, make sure to change it accordingly
 
-git clone --bare git@github.com:autoklose/laravel-9.git
-Create a new private repository on Github and name it laravel-9.
+##### Step 4: in a container shell, run composer install
+`RUN composer install`
 
-Mirror-push your bare clone to your new repository.
+##### Step 5: in a container shell, generate Laravel key
+`RUN php artisan key:generate`
 
-Replace <your_username> with your actual Github username in the url below.
+##### Step 6: in a container shell, listen a queue
+`RUN php artisan queue:work`
 
-cd laravel-9.git
-git push --mirror git@github.com:<your_username>/laravel-9.git
-Remove the temporary local repository you created in step 1.
+##### Step 7: Interact with the API
+http://localhost:9999/api/1/send?api_token=secret -- to send an email
 
-cd ..
-rm -rf laravel-9.git
-You can now clone your laravel-9 repository on your machine (in my case in the code folder).
+```
+json example
+{
+    "emails": [
+        {
+            "email": "target+email@gmail.com",
+            "subject": "Subject",
+            "body": "Body"
+        }
+    ]
+}
+```
 
-cd ~/code
-git clone git@github.com:<your_username>/laravel-9.git
+http://localhost:9999/api/list?api_token=secret -- to list all email in Elasticsearch (make sure to send at least 1 email)
+
+##### Step 8: Testing. Make sure you are in a container shell
+`RUN php artisan test`

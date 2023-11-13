@@ -2,16 +2,16 @@
 
 namespace App\Utilities\Contracts;
 
+use App\Mail\SendEmail;
+
 interface ElasticsearchHelperInterface {
     /**
      * Store the email's message body, subject and to address inside elasticsearch.
      *
-     * @param  string  $messageBody
-     * @param  string  $messageSubject
-     * @param  string  $toEmailAddress
-     * @return mixed - Return the id of the record inserted into Elasticsearch
+     * @param  SendMail  $mail
+     * @return void
      */
-    public function storeEmail(string $mailID, string $messageBody, string $messageSubject, string $toEmailAddress): mixed;
+    public function storeEmail(SendEmail $mail): void;
 
     /**
      * List all email inside elasticsearch.

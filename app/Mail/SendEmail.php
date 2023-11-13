@@ -15,8 +15,10 @@ class SendEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    protected $user_email;
-    protected $user_name;
+    public $user_name;
+    public $user_email;
+    public $id;
+    public $email;
     public $subject;
     public $body;
 
@@ -25,10 +27,12 @@ class SendEmail extends Mailable
      *
      * @return void
      */
-    public function __construct(string $user_email, string $user_name, string $subject, string $body)
+    public function __construct(string $id, string $user_email, string $email, string $user_name, string $subject, string $body)
     {
-        $this->user_email = $user_email;
+        $this->id = $id;
         $this->user_name = $user_name;
+        $this->user_email = $user_email;
+        $this->email = $email;
         $this->subject = $subject;
         $this->body = $body;
     }

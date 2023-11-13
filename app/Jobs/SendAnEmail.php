@@ -36,29 +36,27 @@ class SendAnEmail implements ShouldQueue
      */
     public function handle(): void
     {
-        Mail::to($this->data['email'])->send(new SendEmail(
-            user_email: $this->data['user_email'],
+        $mailID = (string) Str::ulid();
+
+        $email = new SendEmail(
+            id: $mailID,
             user_name: $this->data['user_name'],
+            user_email: $this->data['user_email'],
+            email: $this->data['email'],
             subject: $this->data['subject'],
             body: $this->data['body']
-        ));
+        );
 
-        $mailID = (string) Str::ulid();
+        Mail::to($this->data['email'])->send($email);
 
         $es = new ElasticSearch();
         $es->storeEmail(
-            mailID: $mailID,
-            messageBody: $this->data['body'],
-            messageSubject: $this->data['subject'],
-            toEmailAddress: $this->data['email']
+            mail: $email
         );
 
         $redis = new Redis();
         $redis->storeRecentMessage(
-            mailID: $mailID,
-            messageSubject: $this->data['subject'],
-            toEmailAddress: $this->data['email'],
-            messageBody: $this->data['body']
+            mail: $email
         );
     }
 }

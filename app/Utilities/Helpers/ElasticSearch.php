@@ -2,27 +2,30 @@
 
 namespace App\Utilities\Helpers;
 
+use App\Mail\SendEmail;
 use App\Utilities\Contracts\ElasticsearchHelperInterface;
 use Carbon\Carbon;
 use MailerLite\LaravelElasticsearch\Facade as MailerLiteElasticSearch;
 
 class ElasticSearch implements ElasticsearchHelperInterface
 {
-    function storeEmail(string $mailID, string $messageBody, string $messageSubject, string $toEmailAddress): mixed
+    function storeEmail(SendEmail $mail): void
     {
         $data = [
             'index' => 'simple-email',
-            'id' => $mailID,
+            'id' => $mail->id,
             'type' => '_doc',
             'body' => [
-                'email' => $toEmailAddress,
-                'subject' => $messageSubject,
-                'body' => $messageBody,
+                'email' => $mail->email,
+                'subject' => $mail->subject,
+                'body' => $mail->body,
+                'user_name' => $mail->user_name,
+                'user_email' => $mail->user_email,
                 'created_at' => Carbon::now()
             ]
         ];
 
-        return MailerLiteElasticSearch::index($data);
+        MailerLiteElasticSearch::index($data);
     }
 
     function listEmail(string $page, string $perPage): array
@@ -44,6 +47,9 @@ class ElasticSearch implements ElasticsearchHelperInterface
                 'email' => $hit['_source']['email'],
                 'subject' => $hit['_source']['subject'],
                 'body' => $hit['_source']['body'],
+                'user_name' => $hit['_source']['user_name'],
+                'user_email' => $hit['_source']['user_email'],
+                'created_at' => $hit['_source']['created_at'],
             ];
         }
 
