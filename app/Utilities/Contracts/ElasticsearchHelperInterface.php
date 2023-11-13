@@ -11,7 +11,7 @@ interface ElasticsearchHelperInterface {
      * @param  string  $toEmailAddress
      * @return mixed - Return the id of the record inserted into Elasticsearch
      */
-    public function storeEmail(string $messageBody, string $messageSubject, string $toEmailAddress): mixed;
+    public function storeEmail(string $mailID, string $messageBody, string $messageSubject, string $toEmailAddress): mixed;
 
     /**
      * List all email inside elasticsearch.

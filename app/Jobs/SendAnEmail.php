@@ -43,8 +43,11 @@ class SendAnEmail implements ShouldQueue
             body: $this->data['body']
         ));
 
+        $mailID = (string) Str::ulid();
+
         $es = new ElasticSearch();
         $es->storeEmail(
+            mailID: $mailID,
             messageBody: $this->data['body'],
             messageSubject: $this->data['subject'],
             toEmailAddress: $this->data['email']
@@ -52,7 +55,7 @@ class SendAnEmail implements ShouldQueue
 
         $redis = new Redis();
         $redis->storeRecentMessage(
-            id: Str::ulid(),
+            mailID: $mailID,
             messageSubject: $this->data['subject'],
             toEmailAddress: $this->data['email'],
             messageBody: $this->data['body']

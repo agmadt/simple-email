@@ -2,18 +2,17 @@
 
 namespace App\Utilities\Helpers;
 
-use Illuminate\Support\Str;
 use App\Utilities\Contracts\ElasticsearchHelperInterface;
 use Carbon\Carbon;
 use MailerLite\LaravelElasticsearch\Facade as MailerLiteElasticSearch;
 
 class ElasticSearch implements ElasticsearchHelperInterface
 {
-    function storeEmail(string $messageBody, string $messageSubject, string $toEmailAddress): mixed
+    function storeEmail(string $mailID, string $messageBody, string $messageSubject, string $toEmailAddress): mixed
     {
         $data = [
             'index' => 'simple-email',
-            'id' => (string) Str::ulid(),
+            'id' => $mailID,
             'type' => '_doc',
             'body' => [
                 'email' => $toEmailAddress,
@@ -38,6 +37,7 @@ class ElasticSearch implements ElasticsearchHelperInterface
 
         $response = MailerLiteElasticSearch::search($params);
         $emails = [];
+        
         foreach ($response['hits']['hits'] as $hit) {
             $emails[] = [
                 'id' => $hit['_id'],

@@ -38,6 +38,7 @@ class EmailController extends Controller
 
         $es = new ElasticSearch();
         $results = $es->listEmail($page, $perPage);
+        
         return response()->json([
             'data' => $results,
         ]);
