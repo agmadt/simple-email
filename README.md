@@ -9,9 +9,9 @@
 `RUN docker-compose up`
 
 ##### Step: 3: open new console and, get into a container shell
-`RUN docker exec -it autoklose-laravel.test-1 bash`
+`RUN docker exec -it laravel.test-1 bash`
 
-NB: autoklose is an automatic folder name, make sure to change it accordingly
+NB: laravel is an automatic folder name, make sure to change it accordingly
 
 ##### Step 4: in a container shell, run composer install
 `RUN composer install`
@@ -20,7 +20,7 @@ NB: autoklose is an automatic folder name, make sure to change it accordingly
 `RUN docker-compose up -d`
 
 ##### Step 6: get into a container shell and generate Laravel key
-`RUN docker exec -it autoklose-laravel.test-1 bash`
+`RUN docker exec -it laravel.test-1 bash`
 `RUN php artisan key:generate`
 
 ##### Step 6: in a container shell, listen a queue
