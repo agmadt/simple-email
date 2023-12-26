@@ -1,4 +1,3 @@
-# Autoklose Assignment
 #### This is a simple email sending API utilizing Elasticsearch and Redis
 
 ## Steps to run the project locally. Make sure docker-compose is installed.
